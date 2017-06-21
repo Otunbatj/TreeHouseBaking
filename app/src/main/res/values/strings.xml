@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TreeHouseBaking</string>
+    <string name="app_name">Baking App</string>
+    <string name="menu_reload">Reload</string>
+    <string name="menu_about">About</string>
+    <string name="title_listitem_list">list_Items</string>
+    <string name="title_listitem_detail">list_item Detail</string>
 </resources>
