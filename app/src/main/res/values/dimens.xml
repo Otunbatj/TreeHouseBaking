@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="edge">2dp</dimen>
+    <dimen name="paddingList">5dp</dimen>
+    <dimen name="elevate">8dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
-    <dimen name="item_width">200dp</dimen>
+    <dimen name="item_width">300dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="title_top">10dp</dimen>
+    <dimen name="imageFit">80dp</dimen>
 </resources>

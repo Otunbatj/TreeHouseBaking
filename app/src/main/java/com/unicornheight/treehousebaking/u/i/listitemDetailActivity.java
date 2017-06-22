@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -49,10 +50,20 @@ public class listitemDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putString(listitemDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(listitemDetailFragment.ARG_ITEM_ID));
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
             listitemDetailFragment fragment = new listitemDetailFragment();
+
             fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
+            fragmentManager.beginTransaction()
                     .add(R.id.listitem_detail_container, fragment)
+                    .commit();
+
+            listitemDetailFragment stepFragment = new listitemDetailFragment();
+            stepFragment.setArguments(arguments);
+            fragmentManager.beginTransaction()
+                    .add(R.id.listitem_step_container, stepFragment)
                     .commit();
         }
     }

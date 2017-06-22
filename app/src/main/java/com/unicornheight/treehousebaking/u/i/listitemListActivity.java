@@ -6,24 +6,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.unicornheight.treehousebaking.R;
 
 import com.unicornheight.treehousebaking.u.i.dummy.DummyContent;
 
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * An activity representing a list of list_Items. This activity
@@ -40,6 +44,8 @@ public class listitemListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    private String imageUrl = "";
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +114,7 @@ public class listitemListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -126,11 +133,38 @@ public class listitemListActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public final View mView;
+            public DummyContent.DummyItem mItem;
+            @Bind(R.id.cake_icon)
+            protected ImageView mCakeIcon;
+            @Bind(R.id.textview_title)
+            protected TextView mContentView;
+            @Bind(R.id.id)
+            protected TextView mIdView;
+
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                ButterKnife.bind(this, view);
+                mContext = view.getContext();
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + mContentView.getText() + "'";
+            }
+        }
+
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).id);
             holder.mContentView.setText(mValues.get(position).content);
+            Glide.with(mContext).load(imageUrl)
+                    .placeholder(R.drawable.empty)
+                    .error(R.drawable.empty)
+                    .into(holder.mCakeIcon);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,10 +172,17 @@ public class listitemListActivity extends AppCompatActivity {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
                         arguments.putString(listitemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        FragmentManager fragmentManager = getSupportFragmentManager();
                         listitemDetailFragment fragment = new listitemDetailFragment();
                         fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
+                        fragmentManager.beginTransaction()
                                 .replace(R.id.listitem_detail_container, fragment)
+                                .commit();
+
+                        listitemDetailFragment stepFragment = new listitemDetailFragment();
+                        stepFragment.setArguments(arguments);
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.listitem_step_container, stepFragment)
                                 .commit();
                     } else {
                         Context context = v.getContext();
@@ -159,23 +200,5 @@ public class listitemListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-        }
     }
 }

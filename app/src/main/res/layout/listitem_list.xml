@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:elevation="@dimen/elevate"
+    android:padding="@dimen/edge"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.unicornheight.treehousebaking.u.i.listitemListActivity"
     tools:listitem="@layout/listitem_list_content" />
